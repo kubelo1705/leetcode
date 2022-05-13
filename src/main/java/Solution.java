@@ -1,7 +1,23 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 class Solution {
+    /* https://leetcode.com/problems/two-sum/ */
+    public int[] twoSum(int[] nums, int target) {
+        Map vistedNums = new HashMap<Integer, Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            int neededNum = target - nums[i];
+            if (vistedNums.containsKey(neededNum)) {
+                return new int[]{(int) vistedNums.get(neededNum), i};
+            } else {
+                vistedNums.put(nums[i], i);
+            }
+        }
+        return new int[]{};
+    }
+
+    /* https://leetcode.com/problems/add-two-numbers/ */
     public class ListNode {
         int val;
         ListNode next;
@@ -18,20 +34,6 @@ class Solution {
             this.next = next;
         }
     }
-
-    public int[] twoSum(int[] nums, int target) {
-        Map vistedNums = new HashMap<Integer, Integer>();
-        for (int i = 0; i < nums.length; i++) {
-            int neededNum = target - nums[i];
-            if (vistedNums.containsKey(neededNum)) {
-                return new int[]{(int) vistedNums.get(neededNum), i};
-            } else {
-                vistedNums.put(nums[i], i);
-            }
-        }
-        return new int[]{};
-    }
-
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode result = new ListNode();
         ListNode currentNode = result;
@@ -84,6 +86,7 @@ class Solution {
         return result;
     }
 
+    /* https://leetcode.com/problems/longest-substring-without-repeating-characters/ */
     public static int lengthOfLongestSubstring(String s) {
         int maxLengthOfSubstring = 0;
         int lengthOfSubstring = 0;
@@ -108,6 +111,7 @@ class Solution {
         return maxLengthOfSubstring;
     }
 
+    /* https://leetcode.com/problems/median-of-two-sorted-arrays/ */
     public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int shorter = Math.min(nums1.length, nums2.length);
         int longer = Math.max(nums1.length, nums2.length);
@@ -150,6 +154,7 @@ class Solution {
         }
     }
 
+    /* https://leetcode.com/problems/find-kth-bit-in-nth-binary-string/ */
     public char findKthBit(int loopNum, int position) {
         String result = "0";
         while (--loopNum != 0) {
@@ -163,28 +168,8 @@ class Solution {
         return result.charAt(position - 1);
     }
 
+    /* https://leetcode.com/problems/longest-palindromic-substring/ */
     public static String longestPalindrome(String s) {
-//        String longestPalindrome = "";
-//        int end;
-//        for(int start=0;start<s.length();start++){
-//            end=s.length()-1;
-//            int count=0;
-//            while(start+count<=end-count){
-//                if(s.charAt(start+count)==s.charAt(end-count)){
-//                    count++;
-//                }else {
-//                    end--;
-//                    count=0;
-//                }
-//            }
-//            if(count!=0 && start+count>=end-count){
-//                String palindrome=s.substring(start,end+1);
-//                if(palindrome.length()>longestPalindrome.length()){
-//                    longestPalindrome=palindrome;
-//                }
-//            }
-//        }
-//        return longestPalindrome;
         String longestPalindrome = "";
         int left;
         int right;
@@ -215,6 +200,7 @@ class Solution {
         return longestPalindrome;
     }
 
+    /* https://leetcode.com/problems/zigzag-conversion/ */
     public static String convert(String s, int numRows) {
         String[] patterns = new String[numRows];
         for (int i = 0; i < patterns.length; i++) {
@@ -225,17 +211,17 @@ class Solution {
         int index = 0;
         for (int i = 0; i < s.length(); i++) {
             patterns[index + step] += s.substring(i, i + 1);
-            if (index+step == numRows - 1){
-              if(step == 0) {
-                  step = Math.max(numRows - 2, 0);
-              }
-              index=0;
-              continue;
+            if (index + step == numRows - 1) {
+                if (step == 0) {
+                    step = Math.max(numRows - 2, 0);
+                }
+                index = 0;
+                continue;
             }
             if (step > 0) {
                 step--;
-                index=0;
-            }else {
+                index = 0;
+            } else {
                 index++;
             }
         }
@@ -245,16 +231,81 @@ class Solution {
         return result;
     }
 
+    /* https://leetcode.com/problems/reverse-integer/ */
     public static int reverse(int x) {
-        long result=0;
-        while(x!=0){
-            result=result*10+x%10;
-            x=x/10;
+        long result = 0;
+        while (x != 0) {
+            result = result * 10 + x % 10;
+            x = x / 10;
         }
-        return result==(int)result?(int) result:0;
+        return result == (int) result ? (int) result : 0;
     }
 
+    /*
+    Count used numbers when mark page number in paper
+    Example:
+    -input: 5 => mark 1 2 3 4 5
+    -output: 0 1 1 1 1 1 0 0 0 0
+             0 1 2 3 4 5 6 7 8 9
+     */
+    public static int[] countUsedNumber(int number) {
+        int[] usedNumbers = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        int tenColumn = number / 10;
+        if (tenColumn == 0) {
+            while(number!=0) {
+                usedNumbers[number--]++;
+            }
+        } else {
+            while (number!=0) {
+                int unitColumn = number % 10;
+                if (unitColumn == 0) {
+                    usedNumbers[tenColumn]++;
+                    usedNumbers[unitColumn]++;
+                    tenColumn--;
+                } else {
+                    if(tenColumn!=0) {
+                        usedNumbers[tenColumn]++;
+                    }
+                    usedNumbers[unitColumn]++;
+                }
+                number--;
+            }
+        }
+        return usedNumbers;
+    }
+
+    public static boolean isMatch(String s, String p) {
+        for (int i = 0; i < p.length(); i++) {
+            if(p.charAt(i)=='.'){
+                continue;
+            }else if(p.charAt(i)=='*') {
+                if(i-1>=0){
+
+                }else {
+                    continue;
+                }
+            }
+        }
+        return false;
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(reverse(1534236469));
+        Scanner scanner=new Scanner(System.in);
+        int n=scanner.nextInt();
+        scanner.nextLine();
+        int[] numbers=new int[n];
+        for (int i = 0; i < n; i++) {
+            numbers[i]=scanner.nextInt();
+            scanner.nextLine();
+        }
+        for (int i = 0; i < numbers.length; i++) {
+            int[] result=countUsedNumber(numbers[i]);
+            for (int j : result) {
+                System.out.print(j+"\t");
+            }
+            System.out.println();
+        }
+
     }
 }
