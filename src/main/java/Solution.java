@@ -1,6 +1,4 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 class Solution {
     /* https://leetcode.com/problems/two-sum/ */
@@ -34,6 +32,7 @@ class Solution {
             this.next = next;
         }
     }
+
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode result = new ListNode();
         ListNode currentNode = result;
@@ -252,18 +251,18 @@ class Solution {
         int[] usedNumbers = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         int tenColumn = number / 10;
         if (tenColumn == 0) {
-            while(number!=0) {
+            while (number != 0) {
                 usedNumbers[number--]++;
             }
         } else {
-            while (number!=0) {
+            while (number != 0) {
                 int unitColumn = number % 10;
                 if (unitColumn == 0) {
                     usedNumbers[tenColumn]++;
                     usedNumbers[unitColumn]++;
                     tenColumn--;
                 } else {
-                    if(tenColumn!=0) {
+                    if (tenColumn != 0) {
                         usedNumbers[tenColumn]++;
                     }
                     usedNumbers[unitColumn]++;
@@ -274,38 +273,83 @@ class Solution {
         return usedNumbers;
     }
 
+    /* https://leetcode.com/problems/regular-expression-matching/ */
     public static boolean isMatch(String s, String p) {
-        for (int i = 0; i < p.length(); i++) {
-            if(p.charAt(i)=='.'){
-                continue;
-            }else if(p.charAt(i)=='*') {
-                if(i-1>=0){
-
-                }else {
-                    continue;
-                }
-            }
-        }
-        return false;
+        return s.matches(p);
     }
 
+    /* https://leetcode.com/problems/container-with-most-water/ */
+    public static int maxArea(int[] height) {
+        int max=0;
+        int left=0;
+        int right=height.length-1;
+        for(int i=height.length-1;i>0;i--){
+            max=Math.max(max,Math.min(height[left],height[right] )*i);
+            if(height[left]<=height[right]){
+                left++;
+            }else{
+                right--;
+            }
+        }
+        return max;
+    }
+
+    /* https://leetcode.com/problems/integer-to-roman/ */
+    public static String intToRoman(int num) {
+        StringBuilder result=new StringBuilder();
+        int[] values= new int[]{1000,500,100,50,10,5,1};
+        char[] chars=new char[]{'M','D','C','L','X','V','I'};
+        int[] specialValues=new int[]{900,400,90,40,9,4,1000};//1000 is added for index in array equal with other array
+        String[] specialChars=new String[]{"CM","CD","XC","XL","IX","IV",""};
+        for (int i = 0; i < values.length; i++) {
+            while(num>=values[i]){
+                result.append(chars[i]);
+                num-=values[i];
+            }
+            if(num>=specialValues[i]){
+                result.append(specialChars[i]);
+                num-=specialValues[i];
+            }
+            if(num==0){
+                break;
+            }
+        }
+        return result.toString();
+    }
+
+    /* https://leetcode.com/problems/substring-with-concatenation-of-all-words/ */
+    public static List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> result=new ArrayList<>();
+
+        int lengthOfSubStrings=words[0].length()* words.length;
+
+        for(int i=0;i<=s.length()-lengthOfSubStrings;i++){
+            StringBuilder checkString=new StringBuilder(s.substring(i,i+lengthOfSubStrings));
+            for (int j = 0; j < words.length; j++) {
+                int indexOfSubString=findIndexOfSubString(checkString,words[j]);
+                if(indexOfSubString!=-1){
+                    checkString=checkString.delete(indexOfSubString,indexOfSubString+words[j].length());
+                }else {
+                    break;
+                }
+            }
+            if(checkString.length()==0){
+                result.add(i);
+            }
+        }
+
+        return result;
+    }
+    public static int findIndexOfSubString(StringBuilder s,String subString){
+        for(int i=0;i<s.length();i+=subString.length()){
+            if(s.substring(i,i+subString.length()).equals(subString)){
+                return i;
+            }
+        }
+        return -1;
+    }
 
     public static void main(String[] args) {
-        Scanner scanner=new Scanner(System.in);
-        int n=scanner.nextInt();
-        scanner.nextLine();
-        int[] numbers=new int[n];
-        for (int i = 0; i < n; i++) {
-            numbers[i]=scanner.nextInt();
-            scanner.nextLine();
-        }
-        for (int i = 0; i < numbers.length; i++) {
-            int[] result=countUsedNumber(numbers[i]);
-            for (int j : result) {
-                System.out.print(j+"\t");
-            }
-            System.out.println();
-        }
-
+        findSubstring("ababaab",new String[]{"ab","ba","ba"}).forEach(i-> System.out.println(i));
     }
 }
