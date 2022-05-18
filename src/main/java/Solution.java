@@ -299,7 +299,7 @@ class Solution {
         StringBuilder result=new StringBuilder();
         int[] values= new int[]{1000,500,100,50,10,5,1};
         char[] chars=new char[]{'M','D','C','L','X','V','I'};
-        int[] specialValues=new int[]{900,400,90,40,9,4,1000};//1000 is added for index in array equal with other array
+        int[] specialValues=new int[]{900,400,90,40,9,4,1000};//1000 is added for index in this array equal with other array
         String[] specialChars=new String[]{"CM","CD","XC","XL","IX","IV",""};
         for (int i = 0; i < values.length; i++) {
             while(num>=values[i]){
@@ -350,6 +350,6 @@ class Solution {
     }
 
     public static void main(String[] args) {
-        findSubstring("ababaab",new String[]{"ab","ba","ba"}).forEach(i-> System.out.println(i));
+        
     }
 }
