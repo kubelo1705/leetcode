@@ -280,14 +280,14 @@ class Solution {
 
     /* https://leetcode.com/problems/container-with-most-water/ */
     public static int maxArea(int[] height) {
-        int max=0;
-        int left=0;
-        int right=height.length-1;
-        for(int i=height.length-1;i>0;i--){
-            max=Math.max(max,Math.min(height[left],height[right] )*i);
-            if(height[left]<=height[right]){
+        int max = 0;
+        int left = 0;
+        int right = height.length - 1;
+        for (int i = height.length - 1; i > 0; i--) {
+            max = Math.max(max, Math.min(height[left], height[right]) * i);
+            if (height[left] <= height[right]) {
                 left++;
-            }else{
+            } else {
                 right--;
             }
         }
@@ -296,21 +296,21 @@ class Solution {
 
     /* https://leetcode.com/problems/integer-to-roman/ */
     public static String intToRoman(int num) {
-        StringBuilder result=new StringBuilder();
-        int[] values= new int[]{1000,500,100,50,10,5,1};
-        char[] chars=new char[]{'M','D','C','L','X','V','I'};
-        int[] specialValues=new int[]{900,400,90,40,9,4,1000};//1000 is added for index in array equal with other array
-        String[] specialChars=new String[]{"CM","CD","XC","XL","IX","IV",""};
+        StringBuilder result = new StringBuilder();
+        int[] values = new int[]{1000, 500, 100, 50, 10, 5, 1};
+        char[] chars = new char[]{'M', 'D', 'C', 'L', 'X', 'V', 'I'};
+        int[] specialValues = new int[]{900, 400, 90, 40, 9, 4, 1000};//1000 is added for index in array equal with other array
+        String[] specialChars = new String[]{"CM", "CD", "XC", "XL", "IX", "IV", ""};
         for (int i = 0; i < values.length; i++) {
-            while(num>=values[i]){
+            while (num >= values[i]) {
                 result.append(chars[i]);
-                num-=values[i];
+                num -= values[i];
             }
-            if(num>=specialValues[i]){
+            if (num >= specialValues[i]) {
                 result.append(specialChars[i]);
-                num-=specialValues[i];
+                num -= specialValues[i];
             }
-            if(num==0){
+            if (num == 0) {
                 break;
             }
         }
@@ -319,37 +319,122 @@ class Solution {
 
     /* https://leetcode.com/problems/substring-with-concatenation-of-all-words/ */
     public static List<Integer> findSubstring(String s, String[] words) {
-        List<Integer> result=new ArrayList<>();
+        List<Integer> result = new ArrayList<>();
 
-        int lengthOfSubStrings=words[0].length()* words.length;
+        int lengthOfSubStrings = words[0].length() * words.length;
 
-        for(int i=0;i<=s.length()-lengthOfSubStrings;i++){
-            StringBuilder checkString=new StringBuilder(s.substring(i,i+lengthOfSubStrings));
+        for (int i = 0; i <= s.length() - lengthOfSubStrings; i++) {
+            StringBuilder checkString = new StringBuilder(s.substring(i, i + lengthOfSubStrings));
             for (int j = 0; j < words.length; j++) {
-                int indexOfSubString=findIndexOfSubString(checkString,words[j]);
-                if(indexOfSubString!=-1){
-                    checkString=checkString.delete(indexOfSubString,indexOfSubString+words[j].length());
-                }else {
+                int indexOfSubString = findIndexOfSubString(checkString, words[j]);
+                if (indexOfSubString != -1) {
+                    checkString = checkString.delete(indexOfSubString, indexOfSubString + words[j].length());
+                } else {
                     break;
                 }
             }
-            if(checkString.length()==0){
+            if (checkString.length() == 0) {
                 result.add(i);
             }
         }
 
         return result;
     }
-    public static int findIndexOfSubString(StringBuilder s,String subString){
-        for(int i=0;i<s.length();i+=subString.length()){
-            if(s.substring(i,i+subString.length()).equals(subString)){
+
+    public static int findIndexOfSubString(StringBuilder s, String subString) {
+        for (int i = 0; i < s.length(); i += subString.length()) {
+            if (s.substring(i, i + subString.length()).equals(subString)) {
                 return i;
             }
         }
         return -1;
     }
 
+    /* https://leetcode.com/problems/roman-to-integer/ */
+    public static int romanToInt(String s) {
+        int sum = 0;
+        while (s.length() > 0) {
+            int first = findValueOfRomanInInt(s.charAt(0));
+            int second = 0;
+
+            if (s.length() > 1) {
+                second = findValueOfRomanInInt(s.charAt(1));
+            }
+
+            if (second > first) {
+                sum += (second - first);
+                s = s.substring(2);
+            } else {
+                sum += first;
+                s = s.substring(1);
+            }
+        }
+        return sum;
+    }
+
+    public static int findValueOfRomanInInt(char roman) {
+        char[] romans = new char[]{'I', 'V', 'X', 'L', 'C', 'D', 'M'};
+        int[] values = new int[]{1, 5, 10, 50, 100, 500, 1000};
+        for (int i = 0; i < romans.length; i++) {
+            if (romans[i] == roman) {
+                return values[i];
+            }
+        }
+        return 0;
+    }
+
+    /* https://leetcode.com/problems/longest-common-prefix/ */
+    public static String longestCommonPrefix(String[] strs) {
+        if (strs.length == 0) return "";
+        String prefix = strs[0];
+        for (int i = 1; i < strs.length; i++) {
+            while (strs[i].indexOf(prefix) != 0) {
+                prefix = prefix.substring(0, prefix.length() - 1);
+            }
+
+        }
+        return prefix;
+    }
+
+    /* https://leetcode.com/problems/best-time-to-buy-and-sell-stock/ */
+    public static int maxProfit(int[] prices){
+        int min=prices[0],maxProfit=0;
+        for (int i = 0; i < prices.length; i++) {
+            min=Math.min(min,prices[i]);
+            maxProfit=Math.max(maxProfit,prices[i]-min);
+        }
+
+        return Math.max(0,maxProfit);
+    }
+
+    /* https://leetcode.com/problems/contains-duplicate/ */
+    public static boolean containsDuplicate(int[] nums) {
+        Set<Integer> set=new HashSet<>();
+        for (int i = 0; i < nums.length; i++) {
+            if(!set.add(nums[i])){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /* https://leetcode.com/problems/product-of-array-except-self/ */
+    public int[] productExceptSelf(int[] nums) {
+        int length=nums.length;
+
+        int[] results=nums;
+
+        for (int i = 1; i < length-1; i++) {
+            results[i]=results[i-1]*results[i+1];
+        }
+
+        nums.
+
+        return results;
+    }
+
+
     public static void main(String[] args) {
-        findSubstring("ababaab",new String[]{"ab","ba","ba"}).forEach(i-> System.out.println(i));
+        System.out.println(maxProfit(new int[]{7,1,5,3,6,4}));
     }
 }
