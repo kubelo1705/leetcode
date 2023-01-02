@@ -299,7 +299,7 @@ class Solution {
         StringBuilder result = new StringBuilder();
         int[] values = new int[]{1000, 500, 100, 50, 10, 5, 1};
         char[] chars = new char[]{'M', 'D', 'C', 'L', 'X', 'V', 'I'};
-        int[] specialValues = new int[]{900, 400, 90, 40, 9, 4, 1000};//1000 is added for index in array equal with other array
+        int[] specialValues = new int[]{900, 400, 90, 40, 9, 4, 1000};//1000 is added for index in this array equal with other array
         String[] specialChars = new String[]{"CM", "CD", "XC", "XL", "IX", "IV", ""};
         for (int i = 0; i < values.length; i++) {
             while (num >= values[i]) {
@@ -397,44 +397,29 @@ class Solution {
     }
 
     /* https://leetcode.com/problems/best-time-to-buy-and-sell-stock/ */
-    public static int maxProfit(int[] prices){
-        int min=prices[0],maxProfit=0;
+    public static int maxProfit(int[] prices) {
+        int min = prices[0], maxProfit = 0;
         for (int i = 0; i < prices.length; i++) {
-            min=Math.min(min,prices[i]);
-            maxProfit=Math.max(maxProfit,prices[i]-min);
+            min = Math.min(min, prices[i]);
+            maxProfit = Math.max(maxProfit, prices[i] - min);
         }
 
-        return Math.max(0,maxProfit);
+        return Math.max(0, maxProfit);
     }
 
     /* https://leetcode.com/problems/contains-duplicate/ */
     public static boolean containsDuplicate(int[] nums) {
-        Set<Integer> set=new HashSet<>();
+        Set<Integer> set = new HashSet<>();
         for (int i = 0; i < nums.length; i++) {
-            if(!set.add(nums[i])){
+            if (!set.add(nums[i])) {
                 return true;
             }
         }
         return false;
     }
 
-    /* https://leetcode.com/problems/product-of-array-except-self/ */
-    public int[] productExceptSelf(int[] nums) {
-        int length=nums.length;
-
-        int[] results=nums;
-
-        for (int i = 1; i < length-1; i++) {
-            results[i]=results[i-1]*results[i+1];
-        }
-
-        nums.
-
-        return results;
-    }
-
 
     public static void main(String[] args) {
-        System.out.println(maxProfit(new int[]{7,1,5,3,6,4}));
+        System.out.println(maxProfit(new int[]{7, 1, 5, 3, 6, 4}));
     }
 }
